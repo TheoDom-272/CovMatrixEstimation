@@ -12,9 +12,9 @@ Five estimators are compared: Rolling Sample, EWMA (RiskMetrics), Ledoit-Wolf li
 
 - **QIS and LW consistently dominate** Rolling and EWMA across all tested configurations.
 - **The concentration ratio c = p/n is the principal source of estimation uncertainty:** shrinkage estimators, particularly QIS, are substantially less sensitive to c than Rolling Sample, making them more robust across varying universe sizes and sample lengths.
-- **Exclusion rate is the strongest driver of absolute tracking error levels**; rebalancing frequency is secondary, with quarterly offering the best TE/turnover trade-off.
+- **Exclusion rate is the strongest driver of absolute tracking error levels**, rebalancing frequency is secondary, with quarterly offering the best TE/turnover trade-off.
 - **Daily data outperforms weekly** for large-dimension equity universes: reducing the p/n ratio outweighs microstructure noise reduction from weekly aggregation.
-- EWMA exhibits structural unsuitability for this application due to its pure recursive formulation.
+- EWMA exhibits structural unsuitability for this application.
 
 ## Architecture overview
 
@@ -33,7 +33,6 @@ QuantPortfolioEngine/
 │   │   │   ├── multivariate_vol_estimation.py   # Base classes (MultiVolModel, CovariancePath)
 │   │   │   ├── ledoit_wolf.py                   # LW2004, ANLS2020, QIS2022, OAS
 │   │   │   ├── EWMACov.py                       # RiskMetrics EWMA
-│   │   │   ├── DCC.py                           # DCC-GARCH
 │   │   │   └── Engle/ewma_qmv_numba.py          # Numba-accelerated lambda tuning
 │   │   │
 │   │   └── optimization/
@@ -107,7 +106,7 @@ joblib
 tkinter          # bundled with Python on Windows
 ```
 
-> **Note:** `clarabel` requires Rust to compile from source on some systems. Use `pip install clarabel` — pre-built wheels are available for Windows x64.
+> **Note:** `clarabel` requires Rust to compile from source on some systems. Use `pip install clarabel`.
 
 ## Data setup
 
@@ -125,10 +124,10 @@ python Cov_Modelisation_App.py
 
 The application exposes two tabs:
 
-**Estimation tab** — Single backtest on real data. Configure the index, date range, covariance models, rebalancing frequency, and optimizer. Generates a multi-page PDF report with ex-post TE, NAV, portfolio diagnostics, and model comparisons.
+**Estimation tab** - Single backtest on real data. Configure the index, date range, covariance models, rebalancing frequency, and optimizer. Generates a multi-page PDF report with ex-post TE, NAV, portfolio diagnostics, and model comparisons.
 
-**Monte Carlo tab** — Two parallel branches:
-- *Economic MC*: sweeps a grid of (rolling window × exclusion fraction × rebalancing frequency) over multiple random universe draws; exports an Excel checkpoint file with per-scenario and aggregated metrics.
+**Monte Carlo tab** - Two parallel branches:
+- *Economic MC*: sweeps a grid of (rolling window × exclusion fraction × rebalancing frequency) over multiple random universe draws, exports an Excel checkpoint file with per-scenario and aggregated metrics.
 - *Statistical MC*: DGP-based simulation (Static Oracle or Factor Shock) computing Frobenius / spectral / Stein / precision matrix losses for each estimator.
 
 
@@ -144,13 +143,13 @@ The application exposes two tabs:
 | OAS | `LedoitWolfOAS` | `rebal` |
 | DCC-GARCH | `DCCModel` | `path` |
 
-**`compute_mode="path"`** pre-computes the full covariance series and stores it as a memory-mapped array. Required for EWMA (recursive formulation) and DCC.
+**`compute_mode="path"`** pre-computes the full covariance series and stores it as a memory-mapped array. Required for EWMA (recursive formulation).
 
 **`compute_mode="rebal"`** computes covariance on-demand at each rebalancing date. Lower memory footprint, suitable for all non-recursive estimators.
 
 ## Monte Carlo design
 
-- Seeding convention: `random_state + i` for scenario `i` (base seed 42 by default) — ensures full reproducibility.
+- Seeding convention: `random_state + i` for scenario `i` (base seed 42 by default), ensures full reproducibility.
 - Benchmark index tickers are always excluded from the investable universe before random exclusion sampling is applied.
 - Checkpoint/resume via Excel `run_log` sheet: already-computed scenarios are skipped on restart.
 - Common start date enforced across all models: `common_start = universe_returns.index[max_rolling]` to ensure fair comparison.

@@ -1,6 +1,6 @@
 # QuantPortfolioEngine
 
-A Python framework for evaluating covariance matrix estimators applied to index replication via ex-ante tracking error minimization.
+A Python framework for evaluating covariance matrix estimators.
 
 ## Research question
 

@@ -141,7 +141,6 @@ The application exposes two tabs:
 | ANLS 2020 | `LedoitWolfANLS` | `rebal` |
 | QIS 2022 | `LedoitWolfQIS` | `rebal` |
 | OAS | `LedoitWolfOAS` | `rebal` |
-| DCC-GARCH | `DCCModel` | `path` |
 
 **`compute_mode="path"`** pre-computes the full covariance series and stores it as a memory-mapped array. Required for EWMA (recursive formulation).
 

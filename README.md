@@ -4,7 +4,7 @@ A Python framework for evaluating covariance matrix estimators.
 
 ## Research question
 
-Which covariance estimator best minimizes portfolio tracking error across realistic market conditions?
+Which covariance matrix estimator best reduces estimation uncertainty in large-dimensional equity universes?
 
 Five estimators are compared: Rolling Sample, EWMA (RiskMetrics), Ledoit-Wolf linear shrinkage (LW2004), Analytical Non-Linear Shrinkage (ANLS2020), and Quadratic-Inverse Shrinkage (QIS2022). Test universes are MSCI EMU (~240 European equities) and MSCI US (~600 US equities), with data loaded from local Bloomberg files.
 
